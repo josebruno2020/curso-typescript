@@ -19,7 +19,11 @@ export class NegociacaoController {
   }
 
   handle(): void {
-    const negociacao = this.criaNegociacao();
+    const negociacao = Negociacao.create(
+      this.inputData.value,
+      this.inputQuantidade.value,
+      this.inputValor.value
+    );
     if (!this.isBusinessDay(negociacao.data)) {
       return this.mensagemView.update("Apenas negociações em dias úteis!");
     }
@@ -32,15 +36,6 @@ export class NegociacaoController {
   private isBusinessDay(date: Date): boolean {
     return (
       date.getDay() !== DaysEnum.DOMINGO && date.getDay() !== DaysEnum.SABADO
-    );
-  }
-
-  private criaNegociacao(): Negociacao {
-    const date = new Date(this.inputData.value.replace(/[-]/g, ","));
-    return new Negociacao(
-      date,
-      parseInt(this.inputQuantidade.value),
-      parseFloat(this.inputValor.value)
     );
   }
 

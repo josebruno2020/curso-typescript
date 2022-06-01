@@ -7,4 +7,8 @@ export class Negociacao {
     get data() {
         return new Date(this._data.getTime());
     }
+    static create(data, quantidade, valor) {
+        const date = new Date(data.replace(/[-]/g, ","));
+        return new Negociacao(date, parseInt(quantidade), parseFloat(valor));
+    }
 }
