@@ -1,3 +1,4 @@
+import { DaysEnum } from "../enums/DaysEnum.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
 import { MensagemView } from "../views/mensagemView.js";
@@ -14,10 +15,15 @@ export class NegociacaoController {
     }
     handle() {
         const negociacao = this.criaNegociacao();
+        if (!this.isBusinessDay(negociacao.data)) {
+            return this.mensagemView.update("Apenas negociações em dias úteis!");
+        }
         this.negociacoes.adiciona(negociacao);
-        this.negociacoesView.update(this.negociacoes);
-        this.mensagemView.update("Negociação salva com sucesso!");
+        this.updateView();
         this.cleanForm();
+    }
+    isBusinessDay(date) {
+        return (date.getDay() !== DaysEnum.DOMINGO && date.getDay() !== DaysEnum.SABADO);
     }
     criaNegociacao() {
         const date = new Date(this.inputData.value.replace(/[-]/g, ","));
@@ -27,5 +33,9 @@ export class NegociacaoController {
         const form = document.querySelector(".form");
         form.reset();
         this.inputData.focus();
+    }
+    updateView() {
+        this.negociacoesView.update(this.negociacoes);
+        this.mensagemView.update("Negociação salva com sucesso!");
     }
 }

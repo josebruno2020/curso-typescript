@@ -4,7 +4,7 @@ export abstract class View<T> {
     private element = document.querySelector(selector) as HTMLElement
   ) {}
 
-  abstract template(model: T): string;
+  protected abstract template(model: T): string;
 
   update(model: T): void {
     this.element.innerHTML = this.template(model);
