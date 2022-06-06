@@ -1,3 +1,4 @@
+import { loggedTime } from "../decorators/logged-time.js";
 import { DaysEnum } from "../enums/DaysEnum.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
@@ -18,6 +19,7 @@ export class NegociacaoController {
     this.negociacoesView.update(this.negociacoes);
   }
 
+  @loggedTime()
   handle(): void {
     const negociacao = Negociacao.create(
       this.inputData.value,
