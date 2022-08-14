@@ -1,4 +1,4 @@
-export function loggedTime() {
+export function loggedTime(inSeconds: boolean = false) {
   return function (
     target: any,
     propertyKey: string,
@@ -6,12 +6,19 @@ export function loggedTime() {
 
   ) {
     const originalMethod = descriptor.value
-    descriptor.value = function(...params: any) {
+    descriptor.value = function(...params: any[]) {
+      let divisor = 1;
+      let unidade = 'milisegundos'
+      if (inSeconds) {
+        divisor = 1000;
+        unidade = 'segundos';
+      }
+
       const firstTime = performance.now();
-      originalMethod(...params);
+      const returnValue = originalMethod.apply(this, params);
       const secondTime = performance.now();
-      console.log(`${propertyKey} - tempo de exucação: ${(secondTime - firstTime) / 1000} segundos`);
-      
+      console.log(`${propertyKey} - tempo de exucação: ${(secondTime - firstTime) / divisor} ${unidade}`);
+      returnValue
     }
 
     return descriptor;

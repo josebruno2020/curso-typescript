@@ -1,3 +1,5 @@
+import { loggedTime } from "../decorators/logged-time.js";
+
 export abstract class View<T> {
   constructor(
     selector: string,
@@ -7,6 +9,7 @@ export abstract class View<T> {
 
   protected abstract template(model: T): string;
 
+  @loggedTime(true)
   update(model: T): void {
     let template = this.template(model);
     if (this.scape) {
