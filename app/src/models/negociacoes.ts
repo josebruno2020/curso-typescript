@@ -1,7 +1,7 @@
-import { PrintInterface } from "../interfaces/print-interface.js";
+import { MyModel } from "../interfaces/my-model.js";
 import { Negociacao } from "./negociacao.js";
 
-export class Negociacoes implements PrintInterface {
+export class Negociacoes implements MyModel<Negociacoes> {
   constructor(private readonly negociacoes: Negociacao[] = []) {}
 
   adiciona(negociacao: Negociacao): void {
@@ -14,5 +14,9 @@ export class Negociacoes implements PrintInterface {
 
   stringToPrint(): string {
     return JSON.stringify(this.negociacoes, null, 2)
+  }
+
+  isEqual(obj: Negociacoes): boolean {
+    return JSON.stringify(this.negociacoes) === JSON.stringify(obj.listar())
   }
 }

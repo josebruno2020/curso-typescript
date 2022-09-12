@@ -11,4 +11,7 @@ export class Negociacoes {
     stringToPrint() {
         return JSON.stringify(this.negociacoes, null, 2);
     }
+    isEqual(obj) {
+        return JSON.stringify(this.negociacoes) === JSON.stringify(obj.listar());
+    }
 }

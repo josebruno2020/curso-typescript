@@ -1,6 +1,6 @@
-import { PrintInterface } from "../interfaces/print-interface.js";
+import { MyModel } from "../interfaces/my-model.js";;
 
-export class Negociacao implements PrintInterface {
+export class Negociacao implements MyModel<Negociacao> {
   constructor(
     private readonly _data: Date,
     public readonly quantidade: number,
@@ -22,5 +22,11 @@ export class Negociacao implements PrintInterface {
       Quantidade: ${this.quantidade}
       Vlor: ${this.valor}
     `
+  }
+
+  isEqual(negociacao: Negociacao): boolean {
+    return this.data.getDate() === negociacao.data.getDate()
+      && this.data.getMonth() === negociacao.data.getMonth()
+      && this.data.getFullYear() === negociacao.data.getFullYear()
   }
 }

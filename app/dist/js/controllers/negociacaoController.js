@@ -43,7 +43,10 @@ export class NegociacaoController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const negociacoesFromService = yield NegociacoesService.getNegociacoesDoDia();
-                for (let neg of negociacoesFromService) {
+                const negociacoesNotDuplicated = negociacoesFromService.filter(negociacaoDeHoje => {
+                    return !this.negociacoes.listar().some(nego => nego.isEqual(negociacaoDeHoje));
+                });
+                for (let neg of negociacoesNotDuplicated) {
                     this.negociacoes.adiciona(neg);
                 }
                 this.negociacoesView.update(this.negociacoes);

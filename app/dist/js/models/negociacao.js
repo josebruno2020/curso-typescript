@@ -1,3 +1,4 @@
+;
 export class Negociacao {
     constructor(_data, quantidade, valor) {
         this._data = _data;
@@ -17,5 +18,10 @@ export class Negociacao {
       Quantidade: ${this.quantidade}
       Vlor: ${this.valor}
     `;
+    }
+    isEqual(negociacao) {
+        return this.data.getDate() === negociacao.data.getDate()
+            && this.data.getMonth() === negociacao.data.getMonth()
+            && this.data.getFullYear() === negociacao.data.getFullYear();
     }
 }

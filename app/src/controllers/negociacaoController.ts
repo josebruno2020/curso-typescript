@@ -49,7 +49,11 @@ export class NegociacaoController {
     try {      
       const negociacoesFromService: Negociacao[] = await NegociacoesService.getNegociacoesDoDia()
 
-      for(let neg of negociacoesFromService) {        
+      const negociacoesNotDuplicated = negociacoesFromService.filter(negociacaoDeHoje => {
+        return !this.negociacoes.listar().some(nego => nego.isEqual(negociacaoDeHoje))
+      })
+
+      for(let neg of negociacoesNotDuplicated) {        
         this.negociacoes.adiciona(neg);
       }
 
