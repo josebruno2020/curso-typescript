@@ -4,6 +4,8 @@ import { DaysEnum } from "../enums/DaysEnum.js";
 import { NegociacaoDia } from "../interfaces/negociacao-dia.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
+import { NegociacoesService } from "../services/negociacoes-service.js";
+import { print } from "../utils/print.js";
 import { MensagemView } from "../views/mensagemView.js";
 import { NegociacoesView } from "../views/negociacoesView.js";
 
@@ -38,26 +40,20 @@ export class NegociacaoController {
     }
 
     this.negociacoes.adiciona(negociacao);
+    print(negociacao, this.negociacoes)
     this.updateView();
     this.cleanForm();
   }
 
   async importData(): Promise<void> {
-    try {
-      const fecth = await fetch('http://localhost:8080/dados')
-      const data: NegociacaoDia[] = await fecth.json()
-      
-      const negociacoes: Negociacao[] = data.map(d => {
-        return new Negociacao(new Date(), d.vezes, d.montante)
-      })
+    try {      
+      const negociacoesFromService: Negociacao[] = await NegociacoesService.getNegociacoesDoDia()
 
-      for(let neg of negociacoes) {        
+      for(let neg of negociacoesFromService) {        
         this.negociacoes.adiciona(neg);
       }
 
       this.negociacoesView.update(this.negociacoes)
-
-      console.log(negociacoes)
       
     } catch(err: any) {
       alert('não foi possível buscar as informações.')

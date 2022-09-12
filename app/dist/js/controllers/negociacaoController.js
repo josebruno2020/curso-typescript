@@ -18,6 +18,8 @@ import { loggedTime } from "../decorators/logged-time.js";
 import { DaysEnum } from "../enums/DaysEnum.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
+import { NegociacoesService } from "../services/negociacoes-service.js";
+import { print } from "../utils/print.js";
 import { MensagemView } from "../views/mensagemView.js";
 import { NegociacoesView } from "../views/negociacoesView.js";
 export class NegociacaoController {
@@ -33,22 +35,18 @@ export class NegociacaoController {
             return this.mensagemView.update("Apenas negociações em dias úteis!");
         }
         this.negociacoes.adiciona(negociacao);
+        print(negociacao, this.negociacoes);
         this.updateView();
         this.cleanForm();
     }
     importData() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const fecth = yield fetch('http://localhost:8080/dados');
-                const data = yield fecth.json();
-                const negociacoes = data.map(d => {
-                    return new Negociacao(new Date(), d.vezes, d.montante);
-                });
-                for (let neg of negociacoes) {
+                const negociacoesFromService = yield NegociacoesService.getNegociacoesDoDia();
+                for (let neg of negociacoesFromService) {
                     this.negociacoes.adiciona(neg);
                 }
                 this.negociacoesView.update(this.negociacoes);
-                console.log(negociacoes);
             }
             catch (err) {
                 alert('não foi possível buscar as informações.');

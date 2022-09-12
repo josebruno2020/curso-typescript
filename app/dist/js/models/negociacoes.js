@@ -8,4 +8,7 @@ export class Negociacoes {
     listar() {
         return this.negociacoes;
     }
+    stringToPrint() {
+        return JSON.stringify(this.negociacoes, null, 2);
+    }
 }

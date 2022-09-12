@@ -11,4 +11,11 @@ export class Negociacao {
         const date = new Date(data.replace(/[-]/g, ","));
         return new Negociacao(date, parseInt(quantidade), parseFloat(valor));
     }
+    stringToPrint() {
+        return `
+      DATA: ${this.data}
+      Quantidade: ${this.quantidade}
+      Vlor: ${this.valor}
+    `;
+    }
 }
