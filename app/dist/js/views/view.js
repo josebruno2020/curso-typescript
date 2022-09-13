@@ -23,3 +23,4 @@ __decorate([
     inspect,
     loggedTime(true)
 ], View.prototype, "update", null);
+//# sourceMappingURL=view.js.map

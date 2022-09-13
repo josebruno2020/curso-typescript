@@ -17,3 +17,4 @@ export function loggedTime(inSeconds = false) {
         return descriptor;
     };
 }
+//# sourceMappingURL=logged-time.js.map

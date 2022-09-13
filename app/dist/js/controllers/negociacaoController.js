@@ -82,3 +82,4 @@ __decorate([
 __decorate([
     loggedTime()
 ], NegociacaoController.prototype, "handle", null);
+//# sourceMappingURL=negociacaoController.js.map
