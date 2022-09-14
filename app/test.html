@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="dist/js/models/negociacao.js" type="module"></script>
+  <script>
+    let dbConnection = 'oi';
+
+    const openRequest = window.indexedDB.open('aluraFrame', 4)
+
+    openRequest.onupgradeneeded = (e) => {
+      console.log('cria ou altera ja existente')
+      console.log(e)
+
+      const myConnection = e.target.result
+
+      if (myConnection.objectStoreNames.contains('negociacoes')) {
+        myConnection.deleteObjectStore('negociacoes')
+      }
+
+      myConnection.createObjectStore('negociacoes', {autoIncrement: true})
+    }
+
+    openRequest.onsuccess = (e) => {
+      dbConnection = e.target.result
+      console.log(dbConnection)
+    }
+
+    openRequest.onerror = (e) => {
+      console.log('ERRO')
+      console.log(e.target.error)
+    }
+
+    console.log(dbConnection)
+
+    const adiciona = () => {
+      const transaction = dbConnection.transaction(['negociacoes'], 'readwrite')
+      
+      const store = transaction.objectStore('negociacoes')
+
+      const negociacao = {
+        date: new Date(),
+        quantity: 1,
+        value: 10
+      }
+
+      console.log(negociacao)
+
+      const request = store.add(negociacao)
+
+      request.onsuccess = (e) => {
+        console.log('negociacao incluida com sucesso!')
+      }
+
+      request.onerror = (e) => {
+        console.log('erro')
+      }
+    }  
+
+    const listaTodos = () => {
+      const transaction = dbConnection.transaction(['negociacoes'], 'readwrite')
+      
+      const store = transaction.objectStore('negociacoes')
+
+      const cursor = store.openCursor();
+
+      let negociacoes = []
+      cursor.onsuccess = (e) => {
+
+        let atual = e.target.result
+
+        if (atual) {
+          negociacoes.push(atual.value)
+
+          atual.continue()
+        }
+
+      }
+
+      console.log(negociacoes)
+
+      cursor.onerror = (e) => {
+        console.log(e.target.error.name)
+      }
+    }
+
+    
+  </script>
+</body>
+</html>
